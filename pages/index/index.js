@@ -15,8 +15,8 @@ var snakeHead = {
   x: 0,
   y: 0,
   color: '#ff0000',
-  w:20,
-  h:20,
+  w:10,
+  h:10,
 
 }
 
@@ -104,8 +104,8 @@ Page({
         snakeBodys.push({
           x: snakeHead.x,
           y: snakeHead.y,
-          w: 20,
-          h: 20,
+          w: 10,
+          h: 10,
           color: '#00ff00'
         });
 
@@ -120,15 +120,27 @@ Page({
         switch (snakeDirection) {
           case 'left':
             snakeHead.x -= snakeHead.w;
+            if (snakeHead.x < 0) {
+              snakeHead.x = 375
+            }
             break;
           case 'right':
             snakeHead.x += snakeHead.w;
+            if (snakeHead.x > 375) {
+              snakeHead.x = 0
+            }
             break;
           case 'bottom':
             snakeHead.y += snakeHead.h;
+            if (snakeHead.y > 742) {
+              snakeHead.y = 0
+            }
             break;
           case 'top':
             snakeHead.y -= snakeHead.h;
+            if (snakeHead.y < 0) {
+              snakeHead.y = 742
+            }
             break;
         }
       }
@@ -157,7 +169,7 @@ Page({
         actions: context.getActions()
       });
       
-      setTimeout(animate, 30);
+      setTimeout(animate, 10);
     }
     function rand (min, max) {
       return parseInt(Math.random()*(max-min)) + min;
@@ -167,7 +179,7 @@ Page({
     function Food () {
       this.x = rand(0, windowWidth);
       this.y = rand(0, windowHeight);
-      var w = rand(10, 20);
+      var w = 10;
       this.w = w;
       this.h = w;
       this.color = 'rgb('+rand(0, 255)+', '+rand(0, 255)+', '+rand(0, 255)+')';
