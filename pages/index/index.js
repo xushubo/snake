@@ -39,6 +39,12 @@ var direction = null;
 //蛇移动的方向
 var snakeDirection = 'right';
 
+//已吃数量
+var eatnum = 0;
+
+//移动的速度
+var speed = 15;
+
 Page({
   canvasStart: function (e) {
     startX = e.touches[0].x;
@@ -98,6 +104,12 @@ Page({
 
 
     function animate () {
+      if (eatnum > 10 && eatnum%10==0){
+        speed = 15 - eatnum/10;
+        if (eatnum > 90){
+          speed = 2
+        }
+      }
       frameNum ++;
       if (frameNum % 10 == 0) {
         //向蛇身体数组添加一个蛇头的上一个的位置（身体对象）
@@ -121,25 +133,25 @@ Page({
           case 'left':
             snakeHead.x -= snakeHead.w;
             if (snakeHead.x < 0) {
-              snakeHead.x = 375
+              snakeHead.x = windowWidth
             }
             break;
           case 'right':
             snakeHead.x += snakeHead.w;
-            if (snakeHead.x > 375) {
+            if (snakeHead.x > windowWidth) {
               snakeHead.x = 0
             }
             break;
           case 'bottom':
             snakeHead.y += snakeHead.h;
-            if (snakeHead.y > 742) {
+            if (snakeHead.y > windowHeight) {
               snakeHead.y = 0
             }
             break;
           case 'top':
             snakeHead.y -= snakeHead.h;
             if (snakeHead.y < 0) {
-              snakeHead.y = 742
+              snakeHead.y = windowHeight
             }
             break;
         }
@@ -161,6 +173,7 @@ Page({
           console.log('撞上');
           collideBol = false;
           foodObj.reset();
+          eatnum ++;
         }
       }
 
@@ -169,7 +182,7 @@ Page({
         actions: context.getActions()
       });
       
-      setTimeout(animate, 10);
+      setTimeout(animate, speed);
     }
     function rand (min, max) {
       return parseInt(Math.random()*(max-min)) + min;
